@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的留言</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h4>我的留言</h4>
+     <table class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+                <tr class="danger">
+                    <th>留言时间</th>
+                    <th>留言者</th>
+                    <th>标题</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                    {% for message in messages_list %}
+                        <tr class="{% cycle 'active' 'success' 'warning' 'info' %}">
+                            <td>{{ message.publish|date:'Y-m-d H:i:s' }}</td>
+                            <td>{{ message.username }}</td>
+                            <td>{{ message.title }}</td>
+                            <td>{{ message.content }}</td>
+                        </tr>
+                    {% endfor %}
+
+                    <div>
+                    {% if messages_list.has_previous %}
+                    <a href="?page={{ messages_list.previous_page_number }}">< 上一页</a>
+                    {% endif %}
+                    <span>
+                    {% for p in page_range %}
+                    {% ifequal p messages_list.number %}
+                        <span class="current">{{p}}</span>
+                    {% else %}
+                    <a href="?page={{p}}" title="第{{p}}页">{{p}}</a>
+                        {% endifequal %}
+                    {% endfor %}
+                    </span>
+                    {% if messages_list.has_next %}
+                    <a href="?page={{ messages_list.next_page_number }}">下一页 > </a>
+                    {% endif %}
+                    <a >[第{{ messages_list.number }}/{{ messages_list.paginator.num_pages }}页]</a>
+                    </div>
+
+
+            </tbody>
+        </table>
+</div>
+
+</body>
+</html>
